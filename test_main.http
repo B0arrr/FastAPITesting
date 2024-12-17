@@ -1,0 +1,66 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/hello/User
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/items/foo
+X-Token: coneofsilence
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/items/fo
+X-Token: coneofsilence
+Accept: application/json
+
+###
+
+GET http://127.0.0.1:8000/items/bar
+X-Token: wrong_token
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/items/
+X-Token: coneofsilence
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "foobar",
+  "title": "Foo Bar",
+  "description": "The Foo Barters"
+}
+
+###
+
+POST http://127.0.0.1:8000/items/
+X-Token: wrong_token
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "bazz",
+  "title": "Bazz",
+  "description": "Drop the bazz"
+}
+
+###
+
+POST http://127.0.0.1:8000/items/
+X-Token: coneofsilence
+Content-Type: application/json
+Accept: application/json
+
+{
+    "id": "foo",
+    "title": "The Foo ID Stealers",
+    "description": "There goes my stealer"
+}

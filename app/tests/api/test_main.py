@@ -1,24 +1,20 @@
-from fastapi.testclient import TestClient
-
-from main import app
-
-client = TestClient(app)
+from starlette.testclient import TestClient
 
 
-def test_root():
+def test_root(client: TestClient):
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json == {"message": "Hello World"}
+    assert response.json() == {"message": "Hello World"}
 
 
-def test_say_hello():
+def test_say_hello(client: TestClient):
     name = "Adolf"
     response = client.get(f"/hello/{name}")
     assert response.status_code == 200
     assert response.json() == {"message": f"Hello {name}"}
 
 
-def test_read_item():
+def test_read_item(client: TestClient):
     response = client.get("/items/foo", headers={"X-Token": "coneofsilence"})
     assert response.status_code == 200
     assert response.json() == {
@@ -28,19 +24,19 @@ def test_read_item():
     }
 
 
-def test_read_item_bad_token():
+def test_read_item_bad_token(client: TestClient):
     response = client.get("/items/foo", headers={"X-Token": "hailhydra"})
     assert response.status_code == 400
     assert response.json() == {"detail": "Invalid X-Token header"}
 
 
-def test_read_nonexistent_item():
+def test_read_nonexistent_item(client: TestClient):
     response = client.get("/items/baz", headers={"X-Token": "coneofsilence"})
     assert response.status_code == 404
     assert response.json() == {"detail": "Item not found"}
 
 
-def test_create_item():
+def test_create_item(client: TestClient):
     response = client.post(
         "/items/",
         headers={"X-Token": "coneofsilence"},
@@ -54,7 +50,7 @@ def test_create_item():
     }
 
 
-def test_create_item_bad_token():
+def test_create_item_bad_token(client: TestClient):
     response = client.post(
         "/items/",
         headers={"X-Token": "hailhydra"},
@@ -64,7 +60,7 @@ def test_create_item_bad_token():
     assert response.json() == {"detail": "Invalid X-Token header"}
 
 
-def test_create_existing_item():
+def test_create_existing_item(client: TestClient):
     response = client.post(
         "/items/",
         headers={"X-Token": "coneofsilence"},

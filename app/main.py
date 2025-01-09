@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import FastAPI, Header, HTTPException
 
-from item import Item
+from app.models.item import Item
 
 fake_secret_token = "coneofsilence"
 
